@@ -43,12 +43,12 @@ public class JdbcReservationTimeRepository implements ReservationTimeRepository 
     }
 
     @Override
-    public void deleteById(Long id) {
+    public int deleteById(Long id) {
         String sql = "DELETE FROM reservation_time WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        template.update(sql, params);
+        return template.update(sql, params);
     }
 
     public Optional<ReservationTime> findById(long timeId) {

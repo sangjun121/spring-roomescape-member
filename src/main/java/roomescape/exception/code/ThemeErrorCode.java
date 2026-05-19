@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ThemeErrorCode implements ErrorCode {
-    THEME_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ID를 갖는 테마는 존재하지 않습니다.");
+    THEME_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ID를 갖는 테마는 존재하지 않습니다."),
+    THEME_DELETE_CONFLICT(HttpStatus.CONFLICT, "이미 예약에 사용 중인 테마는 삭제할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

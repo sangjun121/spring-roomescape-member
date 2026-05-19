@@ -42,11 +42,17 @@ public class ReservationTimeService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(long id) {
+        int deletedCount;
+
         try {
-            reservationTimeRepository.deleteById(id);
+            deletedCount = reservationTimeRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new BusinessException(ReservationErrorCode.RESERVATION_TIME_DELETE_CONFLICT);
+        }
+
+        if (deletedCount == 0) {
+            throw new BusinessException(ReservationErrorCode.RESERVATION_TIME_NOT_FOUND);
         }
     }
 

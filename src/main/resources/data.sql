@@ -3,6 +3,7 @@ INSERT INTO reservation_time (start_at) VALUES ('10:00'); -- id 1
 INSERT INTO reservation_time (start_at) VALUES ('11:00'); -- id 2
 INSERT INTO reservation_time (start_at) VALUES ('12:00'); -- id 3
 INSERT INTO reservation_time (start_at) VALUES ('13:00'); -- id 4
+INSERT INTO reservation_time (start_at) VALUES ('14:00'); -- id 5
 
 INSERT INTO theme (name, description, thumbnail_url) VALUES
 ('세기의 도둑', '보안을 뚫고 보석을 훔쳐라', 'https://example.com/themes/thief.jpg'),

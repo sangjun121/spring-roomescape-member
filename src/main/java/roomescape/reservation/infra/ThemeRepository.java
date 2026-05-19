@@ -9,7 +9,7 @@ import java.util.List;
 public interface ThemeRepository {
     Theme save(Theme domain);
 
-    void deleteById(long id);
+    int deleteById(long id);
 
     List<Theme> findByDate(LocalDate date);
 

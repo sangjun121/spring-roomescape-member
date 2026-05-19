@@ -51,12 +51,12 @@ public class JdbcThemeRepository implements ThemeRepository {
     }
 
     @Override
-    public void deleteById(long id) {
+    public int deleteById(long id) {
         String sql = "DELETE FROM theme WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        template.update(sql, params);
+        return template.update(sql, params);
     }
 
     @Override
@@ -78,9 +78,9 @@ public class JdbcThemeRepository implements ThemeRepository {
         String sql = "SELECT t.id, t.name, t.description, t.thumbnail_url " +
                 "FROM theme t " +
                 "LEFT JOIN reservation r " +
-                    "ON t.id = r.theme_id " +
-                    "AND r.date >= :startDate " +
-                    "AND r.date <= :baseDate " +
+                "ON t.id = r.theme_id " +
+                "AND r.date >= :startDate " +
+                "AND r.date <= :baseDate " +
                 "GROUP BY t.id " +
                 "ORDER BY COUNT(r.theme_id) DESC, t.id ASC " +
                 "LIMIT :limit";

@@ -2,8 +2,12 @@ package roomescape.reservation.application;
 
 import java.time.Clock;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import roomescape.exception.code.ReservationErrorCode;
+import roomescape.exception.code.ThemeErrorCode;
+import roomescape.exception.custom.BusinessException;
 import roomescape.reservation.domain.Theme;
 import roomescape.reservation.infra.ThemeRepository;
 import roomescape.reservation.presentation.dto.request.ThemeSaveRequest;
@@ -16,7 +20,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ThemeService {
+public class
+ThemeService {
     private final ThemeRepository themeRepository;
     private final Clock clock;
 
@@ -28,7 +33,17 @@ public class ThemeService {
 
     @Transactional
     public void delete(long id) {
-        themeRepository.deleteById(id);
+        int deletedCount;
+
+        try {
+            deletedCount = themeRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException(ThemeErrorCode.THEME_DELETE_CONFLICT);
+        }
+
+        if (deletedCount == 0) {
+            throw new BusinessException(ThemeErrorCode.THEME_NOT_FOUND);
+        }
     }
 
     public List<ThemeFindResponse> findByDate(LocalDate date) {

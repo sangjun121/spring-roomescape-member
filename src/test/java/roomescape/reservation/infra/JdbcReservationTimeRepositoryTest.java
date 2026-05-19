@@ -37,11 +37,11 @@ public class JdbcReservationTimeRepositoryTest {
     void 전체_시간_조회_레포지토리_테스트() {
         List<ReservationTime> reservationTimes = repository.findAll();
 
-        assertThat(reservationTimes).hasSize(4);
+        assertThat(reservationTimes).hasSize(5);
         assertThat(reservationTimes)
                 .extracting(ReservationTime::getStartAt)
                 .containsExactly(LocalTime.of(10, 00), LocalTime.of(11, 00), LocalTime.of(12, 00),
-                        LocalTime.of(13, 00));
+                        LocalTime.of(13, 00), LocalTime.of(14, 00));
     }
 
     @Test
@@ -50,11 +50,11 @@ public class JdbcReservationTimeRepositoryTest {
         jdbcTemplate.update("DELETE FROM schedule");
         jdbcTemplate.update("DELETE FROM reservation");
 
-        repository.deleteById(1L);
+        repository.deleteById(5L);
 
         int rowCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reservation_time", Integer.class);
 
-        assertThat(rowCount).isEqualTo(3);
+        assertThat(rowCount).isEqualTo(4);
     }
 
     @Test

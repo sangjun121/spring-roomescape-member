@@ -1,7 +1,6 @@
 package roomescape.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +36,9 @@ public class ReservationTimeServiceTest {
 
     @Test
     void 시간_정상_삭제_테스트() {
-        Long id = 1L;
+        Long id = 5L;
+
+        when(reservationTimeRepository.deleteById(id)).thenReturn(1);
 
         reservationTimeService.delete(id);
 
@@ -48,9 +49,7 @@ public class ReservationTimeServiceTest {
     void 이미_예약이_존재하는_시간은_삭제할_수_없다() {
         Long id = 1L;
 
-        doThrow(new DataIntegrityViolationException("외래키 제약"))
-                .when(reservationTimeRepository)
-                .deleteById(id);
+        when(reservationTimeRepository.deleteById(id)).thenThrow(new DataIntegrityViolationException("외래키 제약"));
 
         assertThatThrownBy(() -> reservationTimeService.delete(id))
                 .isInstanceOf(BusinessException.class)

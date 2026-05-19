@@ -43,7 +43,7 @@ public class ReservationTimeControllerTest {
     @Test
     void 시간_관리_API() {
         Map<String, String> params = new HashMap<>();
-        params.put("startAt", "14:00");
+        params.put("startAt", "15:00");
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
@@ -56,12 +56,12 @@ public class ReservationTimeControllerTest {
                 .when().get("/times")
                 .then().log().all()
                 .statusCode(200)
-                .body("size()", is(5));
+                .body("size()", is(6));
 
         deleteTable();
 
         RestAssured.given().log().all()
-                .when().delete("/times/1")
+                .when().delete("/times/5")
                 .then().log().all()
                 .statusCode(204);
     }
