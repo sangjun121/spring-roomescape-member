@@ -55,6 +55,23 @@ public class ThemeControllerTest {
     }
 
     @Test
+    void 테마_이름이_50자를_초과하면_저장에_실패한다() {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        params.put("description", "무서운 분위기의 방탈출");
+        params.put("thumbnailUrl", "https://example.com/theme.jpg");
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(params)
+                .when().post("/themes")
+                .then().log().all()
+                .statusCode(400)
+                .body("code", is("INVALID_INPUT_VALUE"))
+                .body("message", is("이름은 50자를 초과할 수 없습니다."));
+    }
+
+    @Test
     void 테마_추가_및_삭제_API_테스트() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "무서운게 딱 좋아");

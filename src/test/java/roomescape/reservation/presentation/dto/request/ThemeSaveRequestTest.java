@@ -55,4 +55,20 @@ class ThemeSaveRequestTest {
                 .extracting(violation -> violation.getPropertyPath().toString())
                 .containsExactly("name");
     }
+
+    @Test
+    void 이름이_50자를_초과하면_검증에_실패한다() {
+        ThemeSaveRequest request = new ThemeSaveRequest(
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "무서운 분위기의 방탈출",
+                "https://example.com/theme.jpg"
+        );
+
+        Set<ConstraintViolation<ThemeSaveRequest>> violations = validator.validate(request);
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations)
+                .extracting(violation -> violation.getPropertyPath().toString())
+                .containsExactly("name");
+    }
 }
