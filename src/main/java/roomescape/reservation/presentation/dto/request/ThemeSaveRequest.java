@@ -6,7 +6,7 @@ import roomescape.reservation.domain.Theme;
 public record ThemeSaveRequest(
         @NotBlank String name,
         String description,
-        @NotBlank String thumbnailUrl
+        String thumbnailUrl
 ) {
     public Theme toDomain() {
         return new Theme(

@@ -10,7 +10,7 @@ CREATE TABLE theme
     id            BIGINT       NOT NULL AUTO_INCREMENT,
     name          VARCHAR(50)  NOT NULL,
     description   TEXT,
-    thumbnail_url VARCHAR(255) NOT NULL,
+    thumbnail_url VARCHAR(255),
     PRIMARY KEY (id)
 );
 
