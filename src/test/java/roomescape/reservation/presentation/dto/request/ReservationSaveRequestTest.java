@@ -60,6 +60,23 @@ class ReservationSaveRequestTest {
     }
 
     @Test
+    void 이름이_255자를_초과하면_검증에_실패한다() {
+        ReservationSaveRequest request = new ReservationSaveRequest(
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                LocalDate.of(2026, 5, 6),
+                1L,
+                2L
+        );
+
+        Set<ConstraintViolation<ReservationSaveRequest>> violations = validator.validate(request);
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations)
+                .extracting(violation -> violation.getPropertyPath().toString())
+                .containsExactly("name");
+    }
+
+    @Test
     void 날짜가_null이면_검증에_실패한다() {
         ReservationSaveRequest request = new ReservationSaveRequest(
                 "브라운",

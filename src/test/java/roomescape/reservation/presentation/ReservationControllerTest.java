@@ -60,6 +60,24 @@ public class ReservationControllerTest {
     }
 
     @Test
+    void 예약자_이름이_255자를_초과하면_예약_생성에_실패한다() {
+        Map<String, Object> reservation = new HashMap<>();
+        reservation.put("name", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        reservation.put("date", "2026-05-06");
+        reservation.put("timeId", 2);
+        reservation.put("themeId", 1);
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(reservation)
+                .when().post("/reservations")
+                .then().log().all()
+                .statusCode(400)
+                .body("code", is("INVALID_INPUT_VALUE"))
+                .body("message", is("이름은 255자를 초과할 수 없습니다."));
+    }
+
+    @Test
     void 예약_조회() {
         RestAssured.given().log().all()
                 .when().get("/reservations")
