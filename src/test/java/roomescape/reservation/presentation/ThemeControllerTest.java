@@ -103,6 +103,28 @@ public class ThemeControllerTest {
     }
 
     @Test
+    void 인기_테마_조회시_day가_양수가_아니면_실패한다() {
+        RestAssured.given().log().all()
+                .queryParam("day", 0)
+                .queryParam("limit", 10)
+                .when().get("/themes/popular")
+                .then().log().all()
+                .statusCode(400)
+                .body("code", is("INVALID_INPUT_VALUE"));
+    }
+
+    @Test
+    void 인기_테마_조회시_limit가_양수가_아니면_실패한다() {
+        RestAssured.given().log().all()
+                .queryParam("day", 7)
+                .queryParam("limit", 0)
+                .when().get("/themes/popular")
+                .then().log().all()
+                .statusCode(400)
+                .body("code", is("INVALID_INPUT_VALUE"));
+    }
+
+    @Test
     void 테마_전체_조회_API_테스트(){
         RestAssured.given().log().all()
                 .when().get("/themes")
